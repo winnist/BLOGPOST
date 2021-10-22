@@ -1,0 +1,158 @@
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'eclipse-wtp'
+
+
+sourceCompatibility = 1.8		         //設定編譯階段的JDK版本
+sourceSets.main.java.srcDir  'src'	     //使用src目錄放置Java程式原始碼      (gradle原預設位置是src/main/java目錄)
+sourceSets.main.resources.srcDir  'src'	 //使用src目錄放置resources原始碼 (gradle原預設位置是src/main/resources目錄) (在進行cargoRedeployRemote以熱部署匯出war檔時，將可包含xml檔)
+                                                                     
+webAppDirName = 'WebContent'		     //使用WebContent目錄放置網頁資源
+									
+repositories {
+	mavenCentral()					     //使用 maven central repository (中央存儲庫)
+}
+
+compileJava {
+    options.encoding = 'UTF-8'
+}
+
+
+configure(allprojects) { project ->      //函式庫<version>設定動態
+    ext.springVersion = "5.0.6.RELEASE"
+    ext.hibernateVersion = "5.2.2.Final"
+    ext.hibernateValidatorVersion = "5.2.4.Final"
+    
+    ext.servletVersion = "3.1.0"
+    ext.websocketVersion = "1.1"
+    ext.jstlVersion = "1.2.5"
+    ext.jsonVersion = "2.9.7"
+    ext.mailVersion = "1.5.2"
+    
+    ext.commonslangVersion = "3.0"
+    ext.commonsloggingVersion = "1.2"
+    ext.slf4jVersion = "1.7.19"
+    ext.log4jVersion = "1.2.17"
+    ext.googleAPIVersion = "1.31.2"
+}
+
+//設置依賴
+//自行加入會用到的函式庫Library套件，格式如下 :<groupId> : <artifactId> : <version>
+dependencies {
+    //spring
+    implementation("org.springframework:spring-context:${springVersion}")
+    implementation("org.springframework:spring-context-support:${springVersion}")
+    implementation("org.springframework:spring-orm:${springVersion}")
+    implementation("org.springframework:spring-tx:${springVersion}")
+    implementation("org.springframework:spring-aspects:${springVersion}")
+    implementation("org.springframework:spring-webmvc:${springVersion}")
+  //  implementation("org.springframework:spring-test:${springVersion}")
+    
+    //hibernate
+    implementation("org.hibernate:hibernate-core:${hibernateVersion}")
+    implementation("org.hibernate:hibernate-entitymanager:${hibernateVersion}")
+    implementation("org.hibernate:hibernate-c3p0:${hibernateVersion}")
+    implementation("org.hibernate:hibernate-proxool:${hibernateVersion}")
+    implementation("org.hibernate:hibernate-java8:${hibernateVersion}")   //註: hibernate 5 才能支援 Java 8 
+    
+    //hibernate-validator (jsr303 Bean Validation) (jsr303 Bean 驗證)
+    implementation("org.hibernate:hibernate-validator:${hibernateValidatorVersion}")
+    
+    //servlet
+    providedCompile("javax.servlet:javax.servlet-api:${servletVersion}")
+    implementation("javax.servlet:jsp-api:2.0")
+    
+    //websocket
+    providedCompile("javax.websocket:javax.websocket-api:${websocketVersion}")
+    
+    //jstl
+    implementation("org.apache.taglibs:taglibs-standard-impl:${jstlVersion}")
+    implementation("org.apache.taglibs:taglibs-standard-spec:${jstlVersion}")
+    
+    //json
+ //   compile("org.glassfish:javax.json:${jsonVersion}")
+ 	implementation("com.googlecode.json-simple:json-simple:1.1")
+ 	//Spring MVC 可以自動剖析物件傳回 JSON
+    implementation("com.fasterxml.jackson.core:jackson-databind:${jsonVersion}")
+    
+    //gson
+    implementation('com.google.code.gson:gson:2.8.6')
+    
+    //mail
+    implementation("com.sun.mail:javax.mail:${mailVersion}")
+    
+    //commons-lang
+    implementation("org.apache.commons:commons-lang3:${commonslangVersion}")
+    
+    //commons-logging
+    implementation("commons-logging:commons-logging:${commonsloggingVersion}")
+    
+    //slf4j
+    implementation("org.slf4j:slf4j-api:${slf4jVersion}")
+    implementation("org.slf4j:slf4j-log4j12:${slf4jVersion}")
+    
+    //log4j
+    implementation("log4j:log4j:${log4jVersion}")
+    
+    //google-api
+    implementation("com.google.api-client:google-api-client:${googleAPIVersion}")
+    
+ //   testImplementation('org.junit.jupiter:junit-jupiter-api:5.7.0')
+   // testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.7.0")
+    //testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.7.0')
+}
+
+//test {
+  //  useJUnitPlatform()
+//}
+
+buildscript {
+	repositories {
+		jcenter()
+	}
+	dependencies {
+		classpath 'com.bmuschko:gradle-cargo-plugin:2.2.2'
+	}
+}
+
+//使用gradle-cargo-plugin熱部署(輕量級)war
+//需先啟動Tomcat，並於tomcat-users.xml添加：<user password="manager-script" roles="manager-script" username="manager-script"/>
+apply plugin: 'com.bmuschko.cargo'
+cargo {
+    containerId = 'tomcat8x'
+    port = 8081
+    remote {
+		protocol = 'http'
+		hostname = 'localhost'
+		username = 'manager-script'
+		password = 'manager-script'
+    }
+}
+
+//Eclipse Project Facets 只有在 Dynamic Web Project 時才有功能，只是方便"快速擴充套件" 與 "控管套件版本"
+import org.gradle.plugins.ide.eclipse.model.Facet
+eclipse {
+	wtp {
+		facet {
+			facet name: 'jst.web', type: Facet.FacetType.fixed
+			facet name: 'jst.web', version: '3.1'
+
+			facet name: 'jst.java', type: Facet.FacetType.fixed
+			facet name: 'jst.java', version: '1.8'
+			
+			facet name: 'wst.jsdt.web', type: Facet.FacetType.fixed
+			facet name: 'wst.jsdt.web', version: '1.0'
+		}
+	}
+}
+
+//在進行cargoRedeployRemote以熱部署匯出war檔時，將可包含xml檔與java原始檔
+war {
+    webInf{
+        from('src') {
+            include '**/*.*'
+            into('classes/')
+        }
+           
+    }
+}

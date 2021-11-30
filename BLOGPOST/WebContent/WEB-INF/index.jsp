@@ -8,7 +8,7 @@
 <head>
 
 <title>Insert title here</title>
-<meta name="google-signin-client_id" content="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx">
+<meta name="google-signin-client_id" content="794664733369-9f9rmecr9uptjtm802r2nppp4tr3l6am.apps.googleusercontent.com">
 </head>
 
 ${memberVO.memberId}

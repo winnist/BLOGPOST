@@ -2,13 +2,13 @@
 <Context>
 
 
-<!--   <Resource name="xxxxxxxx" -->
+<!--   <Resource name="jdbc/BlogDB" -->
 <!--   	type="javax.sql.DataSource"   -->
 <!--   	auth="Container"  -->
 <!--    	driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"   -->
-<!--    	url="jdbc:sqlserver://blogpostdb.database.windows.net:1433;DatabaseName=xxxxx" -->
-<!--     username="xxxxxxxx@blogpostdb" -->
-<!--     password="xxxxxxxxxxxxxx"/> -->
+<!--    	url="jdbc:sqlserver://blogpostdb.database.windows.net:1433;DatabaseName=BLOGPOST" -->
+<!--     username="blogpostuser@blogpostdb" -->
+<!--     password="P@ssw0rd"/> -->
 
 
 

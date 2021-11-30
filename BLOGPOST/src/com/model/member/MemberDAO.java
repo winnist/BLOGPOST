@@ -28,6 +28,7 @@ public class MemberDAO implements MemberDAO_interface {
 	
 	private static final String UPDATE_NAME_AND_PHOTO_BY_ID_STMT = "update MemberVO set mname=:mname, bdate=:bdate, photo=:photo where memberId=:memberId";
 	private static final String UPDATE_GOOGLEINFO = "update MemberVO set googleSub=:googleSub where memberId=:memberId";
+	private static final String GET_PHOTO_BY_MEMBERID = "select photo from MemberVO where memberId=:memberId";
 	@Autowired
 	private SessionFactory sessionFactory;
 	
@@ -143,5 +144,14 @@ public class MemberDAO implements MemberDAO_interface {
 		if(list.isEmpty()) {
 			return null;
 		}else return list.get(0);
+	}
+	
+	@Override
+	public String getPhotoByMemberId(Integer memberId){
+		Session session = sessionFactory.getCurrentSession();
+		Query query = session.createQuery(GET_PHOTO_BY_MEMBERID);
+		query.setParameter("memberId", memberId);
+		List<Object> list = query.getResultList();
+		return (String) list.get(0);
 	}
 }

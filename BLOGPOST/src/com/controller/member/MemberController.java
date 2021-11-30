@@ -97,14 +97,12 @@ public class MemberController {
 	@RequestMapping(method = RequestMethod.GET, value="getAllMemberJsonStr")
 	@ResponseBody
 	public List<MemberVO> getAllMemberJson(ModelMap model, HttpServletRequest req){
-		System.out.println("hell3");
 		return memberSvc.getAll();
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value="getAllMemberJsonStr2", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public String getAllMemberJson2(ModelMap model){
-		System.out.println("hell4");
 		ObjectMapper objMapper = new ObjectMapper();
 		try {
 			List<MemberVO> lists = memberSvc.getAll();
@@ -112,8 +110,7 @@ public class MemberController {
 			
 			for(MemberVO vo: lists) {
 				System.out.println(vo.getMemberId());
-			}
-			
+			}			
 			System.out.println(memberListJson);
 			return memberListJson;
 		} catch (JsonProcessingException e) {
@@ -121,22 +118,22 @@ public class MemberController {
 			e.printStackTrace();
 			
 		}
-		return "JacksonWrong";
+		return "Wrong";
 		
 	}
 	
 	
 	@RequestMapping(method = RequestMethod.POST, value = "insert")
 	public String insert(HttpServletRequest req, @Valid MemberVO memberVO, BindingResult result, ModelMap model) {
-		System.out.println("123"+memberVO.getMname());
+		System.out.println("member name"+memberVO.getMname());
 		System.out.println(memberVO.getPassword());
 		System.out.println("bdate---------"+memberVO.getBdate());
-try{
-		if(result.hasErrors()) {
-			System.out.println("error insert");
-			System.out.print("blogPOST"+result.getFieldError());
-			//model.addAttribute("actionStatus","新增失敗");
-			return "member/addMember";
+		try{
+			if(result.hasErrors()) {
+				System.out.println("error insert");
+				System.out.print("blogPOST"+result.getFieldError());
+				//model.addAttribute("actionStatus","新增失敗");
+				return "member/addMember";
 		}
 		
 		
@@ -145,9 +142,9 @@ try{
 		model.addAttribute("actionStatus","新增成功");
 		System.out.println(memberVO.getMemberId());
 		req.getSession().setAttribute("memberId", memberVO.getMemberId());
-}catch(Exception e){
-	System.out.println(e.getMessage());
-}
+		}catch(Exception e){
+			System.out.println(e.getMessage());
+		}
 		return "member/listOneMember";		
 	}
 	
@@ -264,7 +261,12 @@ try{
 		 model.addAttribute("postsByMemberId", posts);
 		 return "post/listAllPost";
 	}
-	
+		
+	@RequestMapping(method = RequestMethod.GET, value="getMemberPhoto")
+	@ResponseBody
+	public String getMemberPhoto(Integer memberId){
+		return memberSvc.getPhotoByMemberId(memberId);
+	}
 	
 	@ExceptionHandler(value = Exception.class)
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)

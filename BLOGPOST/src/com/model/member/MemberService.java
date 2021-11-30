@@ -96,4 +96,8 @@ public class MemberService {
 	public MemberVO findByGoogleSub(String googleSub) {
 		return dao.findByGoogleSub(googleSub);
 	}
+	
+	public String getPhotoByMemberId(Integer memberId) {
+		return dao.getPhotoByMemberId(memberId);
+	}
 }

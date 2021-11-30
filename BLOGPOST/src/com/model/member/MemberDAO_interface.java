@@ -25,4 +25,5 @@ public interface MemberDAO_interface {
 	public MemberVO findByEmail(String email);
 	public MemberVO findByGoogleSub(String userId);
 	public int updateGoogleInfo(String userId);
+	public String getPhotoByMemberId(Integer memberId);
 }

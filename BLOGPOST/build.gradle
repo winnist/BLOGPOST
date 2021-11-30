@@ -23,7 +23,7 @@ configure(allprojects) { project ->      //函式庫<version>設定動態
     ext.hibernateVersion = "5.2.2.Final"
     ext.hibernateValidatorVersion = "5.2.4.Final"
     
-    ext.servletVersion = "3.1.0"
+   
     ext.websocketVersion = "1.1"
     ext.jstlVersion = "1.2.5"
     ext.jsonVersion = "2.9.7"
@@ -46,7 +46,10 @@ dependencies {
     implementation("org.springframework:spring-tx:${springVersion}")
     implementation("org.springframework:spring-aspects:${springVersion}")
     implementation("org.springframework:spring-webmvc:${springVersion}")
-  //  implementation("org.springframework:spring-test:${springVersion}")
+  //implementation("org.springframework:spring-test:${springVersion}")
+    //spring websocket
+    implementation("org.springframework:spring-websocket:${springVersion}")
+    implementation("org.springframework:spring-messaging:${springVersion}")
     
     //hibernate
     implementation("org.hibernate:hibernate-core:${hibernateVersion}")
@@ -59,8 +62,11 @@ dependencies {
     implementation("org.hibernate:hibernate-validator:${hibernateValidatorVersion}")
     
     //servlet
-    providedCompile("javax.servlet:javax.servlet-api:${servletVersion}")
-    implementation("javax.servlet:jsp-api:2.0")
+    providedCompile("javax.servlet:javax.servlet-api:3.1.0")
+    providedCompile("javax.servlet:jsp-api:2.0")
+    
+    //jax-rs
+    implementation("javax.ws.rs:javax.ws.rs-api:2.1")
     
     //websocket
     providedCompile("javax.websocket:javax.websocket-api:${websocketVersion}")
@@ -74,7 +80,8 @@ dependencies {
  	implementation("com.googlecode.json-simple:json-simple:1.1")
  	//Spring MVC 可以自動剖析物件傳回 JSON
     implementation("com.fasterxml.jackson.core:jackson-databind:${jsonVersion}")
-    
+    //json-for websocket
+    implementation("com.fasterxml.jackson.core:jackson-core:2.8.6")
     //gson
     implementation('com.google.code.gson:gson:2.8.6')
     
@@ -97,6 +104,16 @@ dependencies {
     //google-api
     implementation("com.google.api-client:google-api-client:${googleAPIVersion}")
     
+    
+    //webjars is client-side web libraries (e.g. jQuery & Bootstrap) packaged into JAR (Java Archive) files.
+    //When using Spring Framework version 4.2 or higher, it will automatically detect the webjars-locator-core library 
+    // on the classpath and use it to automatically
+    implementation("org.webjars:webjars-locator-core:0.35")
+	implementation("org.webjars:sockjs-client:1.0.2")
+	implementation("org.webjars:stomp-websocket:2.3.3")
+	implementation("org.webjars:bootstrap:5.1.0")
+	implementation("org.webjars:jquery:3.1.1-1")
+	
  //   testImplementation('org.junit.jupiter:junit-jupiter-api:5.7.0')
    // testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.7.0")
     //testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.7.0')

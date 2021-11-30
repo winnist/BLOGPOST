@@ -259,8 +259,7 @@ function sendUpdateComment(event){
 				}
 				$('#div_errors').append("<label>請更正以下:" + errorInfo + "</label>")
 				
-			}
-			
+			}			
 		}
 	});
 }

@@ -17,7 +17,7 @@
 </style>
 </head>
 <body>
-<c:if test="${sessionScope.memberId == postVO.memberVO.memberId}" >
+<c:if test="${sessionScope.memberId == sessionScope.curScrollingPageMemberId}" >
 	<a href="<%=request.getContextPath()%>/post/addPost">New Post</a>
 </c:if>
 ${actionStatus}

@@ -166,10 +166,17 @@ public class MemberController {
 	}
 	
 	@RequestMapping(method=RequestMethod.GET, value="listOneMember/{memberId}")
-	public String listOneMember(@PathVariable("memberId")Integer memberId, ModelMap model) {
+	public String listOneMember(@PathVariable("memberId")Integer memberId, ModelMap model, HttpServletRequest req) {
 		MemberVO memberVO = memberSvc.getOneMember(memberId);
+		
+		if(memberVO == null){
+			model.addAttribute("actionStatus", memberId+"do not found");
+			Integer curMemberId = (Integer) req.getSession().getAttribute("memberId");
+			memberVO = memberSvc.getOneMember(curMemberId);
+		} 
+		
 		model.addAttribute("memberVO", memberVO);
-		return "member/listOneMember";
+		return "member/listOneMember";		
 	}
 
 	
@@ -231,9 +238,6 @@ public class MemberController {
 				}
 			}
 			memberVO.setPhoto(reName);
-			
-			
-			
 			/**
 			 // Try 2: save photo to database;
 			 

@@ -24,7 +24,7 @@ import javax.servlet.http.HttpSession;
  * Servlet Filter implementation class LoginFilter
  */
 @WebFilter(
-	urlPatterns = {"/member/*","/post/*"},
+	urlPatterns = {"/member/*","/post/*","/index"},
 	dispatcherTypes = {DispatcherType.REQUEST}
 )
 public class LoginFilter implements Filter {
@@ -63,10 +63,10 @@ public class LoginFilter implements Filter {
 		if(session.getAttribute("memberId") == null && !filterURLExclude(req.getServletPath())) {
 			session.setAttribute("target", servletPath);
 			System.out.println("login target:contextPath:"+contextPath+"--servletPath:"+ servletPath);
-			//RequestDispatcher rd = request.getRequestDispatcher("/index");
+			//RequestDispatcher rd = request.getRequestDispatcher("/login");
 			//rd.forward(req, res);
 			
-			res.sendRedirect(contextPath+"/index");
+			res.sendRedirect(contextPath+"/login");
 		}else {
 			// pass the request along the filter chain
 			

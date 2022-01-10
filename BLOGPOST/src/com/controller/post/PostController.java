@@ -2,12 +2,15 @@ package com.controller.post;
 
 
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.json.simple.JSONValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -157,6 +160,14 @@ public class PostController {
 		return "post/listOnePost";		
 	}
 	
-	
-
+	@RequestMapping(method=RequestMethod.GET, value="getAllPosts")
+	@ResponseBody
+	public Map getAllPost(ModelMap model){
+		List resultList = postSvc.getAll();
+		
+		Map map = new HashMap();
+		
+		map.put("data", resultList);
+		return map;
+	}
 }

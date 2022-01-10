@@ -39,19 +39,16 @@ public class LoginController {
 	private static String CLIENT_ID = "794664733369-9f9rmecr9uptjtm802r2nppp4tr3l6am.apps.googleusercontent.com";
 	
 	
-	@RequestMapping(method=RequestMethod.GET, value="/*")
-	public String loadIndexPage2(ModelMap model) {
-		//model.addAttribute("memberVO", new MemberVO());
-		//System.out.println("login2--------------"+model.containsKey("memberVO"));
-		return "index";
+	@RequestMapping(method=RequestMethod.GET, value={"/*", "login", "index"})
+	public String loadLoginPage(ModelMap model, HttpServletRequest req) {
+		Integer memberId = (Integer) req.getSession().getAttribute("memberId");
+		if(memberId != null){			
+			return "index";
+		}
+		return "login";
 	}
 	
-	@RequestMapping(method=RequestMethod.GET, value="/index")
-	public String loadIndexPage(ModelMap model) {
-		System.out.println("get"+"index");
-		return "index";
-	}
-	
+		
 	@RequestMapping(method=RequestMethod.POST, value="signInGoogle")
 	@ResponseBody
 	public String signInGoogle(@RequestParam("idtoken")String idtokenString, ModelMap model, HttpServletRequest req) throws GeneralSecurityException, IOException {
@@ -141,7 +138,7 @@ public class LoginController {
 		System.out.println("login" + memberVO);
 		if(memberVO == null) {
 			model.addAttribute("loginMsg", "帳號或密碼錯誤");
-			return new ModelAndView("index", model);
+			return new ModelAndView("login", model);
 		}
 		
 		req.getSession().setAttribute("memberId", memberVO.getMemberId());

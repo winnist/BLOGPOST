@@ -26,6 +26,7 @@ Profile
 姓名:${memberVO.mname}
 E-mail:${memberVO.email}
 生日:${memberVO.bdate}
+<a href="mailto:${memberVO.email}">寄信</a>
 <c:choose>
 <c:when test="${sessionScope.memberId == memberVO.memberId}">
 <form method="POST" action="<%=request.getContextPath() %>/member/getOneForUpdate">

@@ -51,8 +51,7 @@ ${actionStatus}
 				<input type="submit" value="修改" onclick="return confirm('確定修改?')"/>				
 			</form>
 		</c:if>
-			<hr>
-			
+			<hr>			
 			</td>
 		</tr>
 	</c:forEach>
@@ -73,7 +72,7 @@ function signOut() {
  // auth2 = gapi.auth2.getAuthInstance();
   //if use google signin, then sign out google first.
   //and then invalidate session / clear sessionScope attributes on server side,
-  //then back to index.
+  //then back to login page.
   if(checkGoogleSignin()){
   		auth2.signOut().then(function () {
     	console.log('User google signed out.');

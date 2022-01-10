@@ -14,17 +14,12 @@ public class PostService {
 	@Autowired
 	PostDAO_interface dao;
 	
-	public void insertPost(PostVO postVO) {
-		
+	public void insertPost(PostVO postVO) {	
 		dao.insert(postVO);
 	}
 	
 	
 	public void updatePost(PostVO postVO) {
-		System.out.println("update111111111");
-		System.out.println(postVO.getMemberVO().getMemberId());
-		System.out.println(postVO.getMemberVO());
-		System.out.println(postVO);
 		dao.update(postVO);
 	}
 	

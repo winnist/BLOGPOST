@@ -22,6 +22,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.model.comment.CommentVO;
 import com.model.member.MemberVO;
@@ -83,6 +84,8 @@ public class PostVO implements Serializable {
 	public void setTitle(String title) {
 		this.title = title;
 	}
+	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm")
 	public Timestamp getPostDate() {
 		return postDate;
 	}

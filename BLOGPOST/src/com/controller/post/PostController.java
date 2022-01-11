@@ -160,6 +160,14 @@ public class PostController {
 		return "post/listOnePost";		
 	}
 	
+	@RequestMapping(method=RequestMethod.GET, value="getOneURLForList/{postId}")
+	@ResponseBody
+	public String getOneURLForList(@PathVariable("postId")Integer postId, ModelMap model) {		
+		PostVO postVO = postSvc.getOnePost(postId);
+		model.addAttribute("postVO", postVO);
+		return "post/getOneForList/"+String.valueOf(postId);		
+	}
+	
 	@RequestMapping(method=RequestMethod.GET, value="getAllPosts")
 	@ResponseBody
 	public Map getAllPost(ModelMap model){

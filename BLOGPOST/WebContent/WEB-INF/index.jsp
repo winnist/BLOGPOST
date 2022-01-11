@@ -16,7 +16,8 @@
 		<tr>
 			<td>Title</td>
 			<td>PostDate</td>
-			<td>Content</td>			
+			<td>Content</td>	
+			<td>Read</td>		
 		</tr>
 	</thead>
 	<tbody>
@@ -31,6 +32,9 @@
 	</tbody>
 </table>
 <script src="${pageContext.request.contextPath}/webjars/jquery/jquery.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
 <script>
 var contextPath = '${pageContext.request.contextPath}';
 	$(document).ready( function () {
@@ -42,7 +46,12 @@ var contextPath = '${pageContext.request.contextPath}';
     		"columns": [
     			{ "data": "title"},
     			{ "data": "postDate"},
-    			{ "data": "content"}    			
+    			{ "data": "content"},
+    			{ "data": 'postId',
+    			  render: function(data, type, row){
+    				 return "<input type='button' onclick='readPost(" + data + ")'  value='READ' />"; 
+    			  }
+    			}
     		]    		
     	});
     	
@@ -60,9 +69,20 @@ var contextPath = '${pageContext.request.contextPath}';
 //     		});
 //     	});
 	});
+	
+	function readPost(id){
+		console.log(id);
+		$.ajax({
+			
+			"url": contextPath+"/post/getOneURLForList/"+id,
+			"type": "get",
+			"success": function(val){
+				console.log('success'+val);
+				window.location.href=val;
+			}
+		});
+	}
 </script>
 
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 </html>
